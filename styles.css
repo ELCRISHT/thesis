@@ -905,7 +905,6 @@ body.dark-theme #recoText {
     height: 80px;
   }
 }
-/* Enhanced mobile responsiveness for auth pages */
 @media (max-width:480px){
   .auth-box{max-width:90%;padding:30px 20px}
   .auth-box h2{font-size:24px}
