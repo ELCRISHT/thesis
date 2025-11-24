@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome • IntelliGrade</title>
+  <link rel="stylesheet" href="welcome.css" />
+</head>
+
+<body class="welcome-page">
+
+  <!-- Background Particles -->
+  <div class="particles"></div>
+
+  <!-- ========================= -->
+  <!--   LEFT HAMBURGER MENU     -->
+  <!-- ========================= -->
+  <div class="hamburger-menu" onclick="toggleMenu()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+  </div>
+
+  <!-- Slide-Out Menu -->
+  <div id="sideMenu" class="side-menu">
+      <h2>Menu</h2>
+      <ul>
+          <li onclick="scrollToSection('about')">About</li>
+          <li onclick="scrollToSection('developers')">Developers</li>
+          <li onclick="scrollToSection('techstack')">Tech Stack</li>
+      </ul>
+  </div>
+
+  <!-- ========================= -->
+  <!--     WELCOME CONTENT       -->
+  <!-- ========================= -->
+  <div class="welcome-container">
+    <h1 class="welcome-title">WELCOME</h1>
+    <p>We are here for you — IntelliGrade empowers data-driven academic insights.</p>
+
+    <button class="btn-start" onclick="goDashboard()">Get Started</button>
+
+    <div class="info-cards">
+
+  <!-- Card 1 -->
+  <div class="purpose-card reveal-hidden">
+    <div class="card-icon">
+      <!-- Book Icon -->
+      <svg viewBox="0 0 24 24">
+        <path fill="currentColor" d="M6 2h9a4 4 0 0 1 4 4v14a1 1 0 0 1-1 1h-1v-2H7a2 2 0 0 0-2 2H3V6a4 4 0 0 1 3-4z"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3>Academic Insight</h3>
+      <p>To examine how students’ dependency on AI-assisted tools influences their academic performance...</p>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="purpose-card reveal-hidden">
+    <div class="card-icon">
+      <!-- Brain Icon -->
+      <svg viewBox="0 0 24 24">
+        <path fill="currentColor" d="M9 2a4 4 0 0 0-4 4v1.1A4 4 0 0 0 2 11v2a4 4 0 0 0 3 3.9V18a4 4 0 1 0 8 0v-.1h2V18a4 4 0 1 0 8 0v-.1A4 4 0 0 0 22 13v-2a4 4 0 0 0-3-3.9V6a4 4 0 1 0-8 0V5.9A4 4 0 0 0 9 2z"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3>AI Dependency</h3>
+      <p>IntelliGrade analyzes patterns of AI dependency to identify risk indicators and learning impacts.</p>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="purpose-card reveal-hidden">
+    <div class="card-icon">
+      <!-- Analytics Chart Icon -->
+      <svg viewBox="0 0 24 24">
+        <path fill="currentColor" d="M3 3h2v18H3V3m4 8h2v10H7V11m4-4h2v14h-2V7m4 8h2v6h-2v-6m4-10h2v16h-2V5z"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3>AI Usage and Behavior</h3>
+      <p>Provides educators and administrators with data-driven insights about AI usage behavior.</p>
+    </div>
+  </div>
+
+</div>
+
+  </div>
+
+  <!-- ========================= -->
+  <!--        ABOUT SECTION      -->
+  <!-- ========================= -->
+  <section id="about" class="info-section">
+    <h2>About IntelliGrade</h2>
+    <p>
+      IntelliGrade is an intelligent academic monitoring system designed to assess and analyze 
+      AI Dependency among students across multiple colleges, programs, and year levels.
+    </p>
+    <p>
+      Built using integrated theoretical frameworks such as Cognitive Load Theory (CLT), 
+      Self-Determination Theory (SDT), and Social Cognitive Theory (SCT), the system generates 
+      personalized insights and recommendations based on students’ usage behavior, motivation, 
+      and cognitive patterns.
+    </p>
+    <p>
+      IntelliGrade helps faculty and administrators make informed decisions through automated analytics, 
+      risk detection, report generation, and intuitive dashboard tools.
+    </p>
+  </section>
+
+<section id="developers" class="info-section reveal-hidden">
+  <h2>Developers</h2>
+
+  <div class="dev-list">
+    <div class="dev-card reveal-hidden">
+      <img class="dev-photo" src="reed.png" alt="DevCo-BLV photo" loading="lazy">
+      <h3>Resource Associate</h3>
+      <h4>J.R. Lajom</h4>
+    </div>
+
+    <div class="dev-card reveal-hidden">
+      <img class="dev-photo" src="mj.png" alt="Ellcryst photo" loading="lazy">
+      <h3>System Developer</h3>
+      <h4> M.J. Valdez</h4>
+    </div>
+
+    <div class="dev-card reveal-hidden">
+      <img class="dev-photo" src="karell.png" alt="Project Team photo" loading="lazy">
+      <h3>Project Manager</h3>
+      <h4> A.K. Balan</h4>
+    </div>
+  </div>
+</section>
+
+  <!-- ========================= -->
+  <!--      TECH STACK SECTION   -->
+  <!-- ========================= -->
+  <section id="techstack" class="info-section">
+    <h2>Tech Stack</h2>
+
+    <ul class="tech-list">
+      <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+      <li><strong>Visualizations:</strong> Chart.js</li>
+      <li><strong>Backend:</strong> FastAPI (Python)</li>
+      <li><strong>Database:</strong> CSV Storage (upgrade-ready design)</li>
+      <li><strong>Reports:</strong> jsPDF & html2canvas</li>
+      <li><strong>UI Styling:</strong> Gradient UI + Glassmorphism + Particle FX</li>
+    </ul>
+  </section>
+
+  <!-- Footer -->
+  <footer class="welcome-footer">
+    IntelliGrade — DevCo-BLV © 2025
+  </footer>
+
+  <script src="welcome.js"></script>
+</body>
+</html>

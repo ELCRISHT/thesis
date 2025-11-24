@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IntelliGrade • Sign Up</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="auth">
+  <div class="auth-box">
+    <img src="IntelliGrade.png" class="logo" alt="LSPU logo">
+    <h2>Create Account</h2>
+    <input id="regEmail" placeholder="Email" type="email" />
+    <input id="regPassword" placeholder="Password" type="password" />
+    <button onclick="signup()">Sign Up</button>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+  </div>
+<script>
+function signup(){
+  const email=document.getElementById('regEmail').value;
+  const pass=document.getElementById('regPassword').value;
+  const users=JSON.parse(localStorage.getItem('users')||'[]');
+  if(users.find(u=>u.email===email)){
+    alert('User already exists');
+    return;
+  }
+  users.push({email,pass});
+  localStorage.setItem('users',JSON.stringify(users));
+  alert('Registration successful!');
+  window.location.href='login.html';
+}
+</script>
+</body>
+</html>

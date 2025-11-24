@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IntelliGrade • Login</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="auth">
+  <div class="particles"></div>
+  <div class="auth-box">
+    <img src="IntelliGrade.png" class="logo" alt="LSPU logo">
+    <h2>IntelliGrade</h2>
+    <p class="subtitle">DevCo-BLV</p>
+    <form onsubmit="return login(event)">
+      <input id="loginEmail" placeholder="Email" type="email" required />
+      <input id="loginPassword" placeholder="Password" type="password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p class="auth-link">Don't have an account? <a href="signup.html">Sign up</a></p>
+  </div>
+<script>
+function login(event){
+  event.preventDefault();
+  const email=document.getElementById('loginEmail').value;
+  const pass=document.getElementById('loginPassword').value;
+  const users=JSON.parse(localStorage.getItem('users')||'[]');
+  const found=users.find(u=>u.email===email && u.pass===pass);
+  if(found){
+    localStorage.setItem('activeUser',email);
+    alert('Login successful!');
+    window.location.href='welcome.html';
+  }else alert('Invalid email or password');
+  
+}
+</script>
+</body>
+</html>

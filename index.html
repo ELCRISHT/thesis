@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IntelliGrade</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script><!--# sourceMappingURL= -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<script>
+const activeUser = localStorage.getItem('activeUser');
+if(!activeUser){
+  window.location.href='login.html';
+}
+</script>
+<body> 
+  <header class="topbar">
+    <div class="brand">
+      <img src="IntelliGrade.png" alt="LSPU logo" class="logo"/>
+      <div>
+        <h1>IntelliGrade</h1>
+        <p class="subtitle">DevCo-BLV</p>
+      </div>
+    </div>
+    <nav class="nav">
+  <button class="nav-btn active">Dashboard</button>
+  <button class="nav-btn" id="reportsBtn">Download Reports</button>
+  <button class="nav-btn">Settings</button>
+  <button class="nav-btn" onclick="logout()">Logout</button>
+<script>
+function logout(){
+  localStorage.removeItem('activeUser');
+  window.location.href='login.html';
+}
+</script>
+
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="controls">
+<label for="studentSelect"><strong>Select Student:</strong></label>
+      <select id="studentSelect"></select>
+      <button id="loadBtn">Load</button>
+    </section>
+
+    <section class="cards">
+      <div class="card">
+        <h3>AI Dependency Index</h3>
+        <p id="aiIndex" class="big">—</p>
+      </div>
+      <div class="card">
+        <h3>Predicted Risk</h3>
+        <p id="riskStatus" class="big">—</p>
+      </div>
+      <div class="card">
+        <h3>Average Grade</h3>
+        <p id="avgGrade" class="big">—</p>
+      </div>
+      <div class="card">
+        <h3>Total Respondents</h3>
+        <p id="totalResp" class="big">—</p>
+      </div>
+    </section>
+
+    <section class="charts">
+      <div class="chart-card">
+        <h4>Dependency Domains</h4>
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>Dependency Score Per College</h4>
+        <canvas id="lineChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>Risk Distribution</h4>
+        <canvas id="pieChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>AI Dependency by Year Level</h4>
+        <canvas id="yearLevelChart"></canvas>
+      </div>
+      <!--<div class="recommendations card">
+        <h4>Recommendations</h4>
+        <div id="recoText">Select a student to view recommendations based on CLT, SDT, and SCT.</div>
+      </div> -->
+    </section>
+  </main>
+  <footer class="footer">IntelliGrade • All Rights Reserved. • DevCo-BLV (2025)</footer>
+
+<script src="app.js"></script>
+
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Settings</h2>
+        <span class="close" onclick="closeSettings()">&times;</span>
+      </div>
+      <div class="modal-body">
+        
+        
+        <div class="settings-section">
+          <h3>User Profile</h3>
+          <div class="setting-item">
+            <label for="userName">Username:</label>
+            <input type="text" id="userName" readonly />
+          </div>
+          <div class="setting-item">
+            <label for="userRole">Role:</label>
+            <input type="text" id="userRole" value="Administrator" readonly />
+          </div>
+        </div>
+
+        
+        <div class="settings-section">
+          <h3>Display Settings</h3>
+          <div class="setting-item">
+            <label for="themeSelect">Theme:</label>
+            <select id="themeSelect">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label for="chartAnimation">Enable Chart Animations:</label>
+            <input type="checkbox" id="chartAnimation" checked />
+          </div>
+        </div>
+
+        
+        <div class="settings-section">
+          <h3>Data Settings</h3>
+          <div class="setting-item">
+            <label for="riskThreshold">High Risk Threshold (AI Index):</label>
+            <input type="number" id="riskThreshold" min="1" max="10" step="0.5" value="5.5" />
+          </div>
+          <div class="setting-item">
+            <label for="autoRefresh">Auto-refresh Data:</label>
+            <input type="checkbox" id="autoRefresh" />
+          </div>
+          <div class="setting-item">
+            <label for="refreshInterval">Refresh Interval (seconds):</label>
+            <input type="number" id="refreshInterval" min="30" max="600" value="300" disabled />
+          </div>
+        </div>
+
+        <!-- Export Settings -->
+        <div class="settings-section">
+          <h3>Export Settings</h3>
+          <div class="setting-item">
+            <label for="exportFormat">Default Export Format:</label>
+            <select id="exportFormat">
+              <option value="pdf">PDF</option>
+              <option value="csv">CSV</option>
+              <option value="excel">Excel</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label for="includeCharts">Include Charts in Export:</label>
+            <input type="checkbox" id="includeCharts" checked />
+          </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="settings-section">
+          <h3>Notifications</h3>
+          <div class="setting-item">
+            <label for="enableNotifications">Enable Notifications:</label>
+            <input type="checkbox" id="enableNotifications" checked />
+          </div>
+          <div class="setting-item">
+            <label for="notifyHighRisk">Notify on High Risk Detection:</label>
+            <input type="checkbox" id="notifyHighRisk" checked />
+          </div>
+        </div>
+
+        <!-- Data Management -->
+        <div class="settings-section">
+          <h3>Data Management</h3>
+          <div class="setting-item">
+            <button class="btn btn-secondary" onclick="exportAllData()">Export All Data (CSV)</button>
+          </div>
+          <div class="setting-item">
+            <button class="btn btn-danger" onclick="clearCache()">Clear Cache</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeSettings()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
