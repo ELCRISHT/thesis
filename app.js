@@ -680,7 +680,7 @@ async function generateReport() {
     const metrics = [
       { label: 'AI Dependency Index', value: record.AI_Dependency_Index },
       { label: 'Predicted Risk', value: (number(record.High_Risk_Flag) === 1 || number(record.AI_Dependency_Index) > 5.5) ? 'HIGH' : 'LOW' },
-      { label: 'Final Grade', value: record.Final_Grade },
+      { label: 'Performance Level', value: record.Final_Grade },
       { label: 'Motivation Score', value: record.Motivation_Score }
     ];
     
