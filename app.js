@@ -1,10 +1,3 @@
-// app.js
-// Complete, cleaned, ready-to-paste file
-// - preserves your original behavior
-// - adds Summary PDF (metrics + recommendations + charts)
-// - fixes previous duplication and syntax issues
-
-// ---------- globals ----------
 let dataset = [];
 let barChart, lineChart, pieChart, yearLevelChart;
 
@@ -52,7 +45,7 @@ function addMetricsBlock(doc, margin, startY, record) {
     ["Reading Dependency:", record.Reading_Dependency_Score],
     ["Writing Dependency:", record.Writing_Dependency_Score],
     ["Numeracy Dependency:", record.Numeracy_Dependency_Score],
-    ["GWA:", record.Prior_GWA]
+    ["Performance_Level:", record.Prior_GWA]
   ];
 
   metrics.forEach(([label, value]) => {
