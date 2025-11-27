@@ -6,34 +6,269 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>IntelliGrade • Login</title>
   <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    #forgotModal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .modal-content {
+      background: #f5f7fb;
+      margin: 12% auto;
+      padding: 25px;
+      border-radius: 18px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+      border: 2px solid #0b5bd7;
+      animation: popIn 0.25s ease-out;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: #0b5bd7;
+    }
+
+    .close {
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      color: #0b5bd7;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #083d92;
+    }
+
+    #resetBtn {
+      background: #0b5bd7;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      padding: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    #resetBtn:hover {
+      background: #0847b1;
+    }
+
+    /* Resend verification button */
+    #resendVerifyBtn {
+      background: transparent;
+      border: none;
+      color: #0b5bd7;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      font-size: 13px;
+    }
+  </style>
 </head>
-<body class="auth">
+
+<body class="auth login-page">
   <div class="particles"></div>
-  <div class="auth-box">
+
+  <div class="auth-box login-box">
     <img src="IntelliGrade.png" class="logo" alt="LSPU logo">
     <h2>IntelliGrade</h2>
     <p class="subtitle">DevCo-BLV</p>
-    <form onsubmit="return login(event)">
+
+    <form id="loginForm">
       <input id="loginEmail" placeholder="Email" type="email" required />
       <input id="loginPassword" placeholder="Password" type="password" required />
-      <button type="submit">Login</button>
+      <button type="submit" id="loginBtn">Login</button>
     </form>
+
     <p class="auth-link">Don't have an account? <a href="signup.html">Sign up</a></p>
+    <p class="auth-link">
+      Forgot password? <a href="#" id="forgotOpen">Click here</a>
+    </p>
+
+    <p id="loginMsg" style="color:#333;margin-top:8px;font-size:13px;"></p>
+
+    <!-- Resend verification appears only when needed -->
+    <button id="resendVerifyBtn" style="display:none;">Resend Verification Email</button>
   </div>
-<script>
-function login(event){
-  event.preventDefault();
-  const email=document.getElementById('loginEmail').value;
-  const pass=document.getElementById('loginPassword').value;
-  const users=JSON.parse(localStorage.getItem('users')||'[]');
-  const found=users.find(u=>u.email===email && u.pass===pass);
-  if(found){
-    localStorage.setItem('activeUser',email);
-    alert('Login successful!');
-    window.location.href='welcome.html';
-  }else alert('Invalid email or password');
-  
-}
-</script>
+
+
+  <!-- FORGOT PASSWORD MODAL -->
+  <div id="forgotModal">
+    <div class="modal-content">
+      <span id="forgotClose" class="close">&times;</span>
+      <h3>Reset Password</h3>
+      <p style="font-size:14px;margin-bottom:10px;color:#333;">
+        Enter your account email to receive a password reset link.
+      </p>
+
+      <input id="resetEmail" type="email" placeholder="Enter your email"
+             style="width:100%;padding:10px;margin-bottom:12px;border-radius:6px;border:1px solid #ccc;">
+
+      <button id="resetBtn">Send Reset Email</button>
+
+      <p id="resetMsg" style="font-size:13px;color:#333;margin-top:10px;"></p>
+    </div>
+  </div>
+
+
+  <!-- Firebase -->
+  <script type="module" src="firebase-init.js"></script>
+  <script type="module" src="auth.js"></script>
+
+  <script type="module">
+    import { signInIfVerified, sendResetEmail } from './auth.js';
+    import { auth } from "./firebase-init.js";
+    import { sendEmailVerification, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+    const form = document.getElementById('loginForm');
+    const msgEl = document.getElementById('loginMsg');
+    const btn = document.getElementById('loginBtn');
+    const resendBtn = document.getElementById('resendVerifyBtn');
+
+
+    /* ======================
+       LOGIN FUNCTIONALITY
+    ====================== */
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msgEl.textContent = '';
+      resendBtn.style.display = "none";
+
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPassword').value;
+
+      try {
+        await signInIfVerified(email, pass);
+        window.location.href = 'welcome.html';
+      } catch (err) {
+        console.error(err);
+
+        if (err.code === 'auth/email-not-verified') {
+          msgEl.innerHTML =
+            "Your email is not verified. Please check your inbox.<br>If you did not receive the message:";
+          
+          resendBtn.style.display = "inline-block";
+          
+        } else if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+          msgEl.textContent = 'Invalid email or password.';
+        } else {
+          msgEl.textContent = err.message || 'Login failed.';
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Login';
+      }
+    });
+
+
+    /* ===============================
+       RESEND VERIFICATION EMAIL
+    =============================== */
+
+    resendBtn.addEventListener('click', async () => {
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPassword').value;
+
+      if (!email || !pass) {
+        msgEl.textContent = "Enter email and password first.";
+        return;
+      }
+
+      try {
+        // temporarily sign in user to send verification email
+        const cred = await signInWithEmailAndPassword(auth, email, pass);
+        await sendEmailVerification(cred.user);
+
+        msgEl.style.color = "green";
+        msgEl.textContent = "Verification email resent. Check your inbox.";
+      } catch (err) {
+        console.error(err);
+        msgEl.style.color = "red";
+        msgEl.textContent = err.message || "Unable to resend verification.";
+      }
+    });
+
+
+
+    /* ===============================
+       FORGOT PASSWORD MODAL LOGIC
+    =============================== */
+
+    const forgotModal = document.getElementById('forgotModal');
+    const forgotOpen = document.getElementById('forgotOpen');
+    const forgotClose = document.getElementById('forgotClose');
+    const resetEmail = document.getElementById('resetEmail');
+    const resetBtn = document.getElementById('resetBtn');
+    const resetMsg = document.getElementById('resetMsg');
+
+    // Open modal
+    forgotOpen.addEventListener('click', (e) => {
+      e.preventDefault();
+      resetMsg.textContent = "";
+      resetEmail.value = "";
+      forgotModal.style.display = "block";
+    });
+
+    // Close modal
+    forgotClose.addEventListener('click', () => {
+      forgotModal.style.display = "none";
+    });
+
+    // Click outside closes modal
+    window.addEventListener('click', (e) => {
+      if (e.target === forgotModal) forgotModal.style.display = "none";
+    });
+
+    // Send reset email
+    resetBtn.addEventListener('click', async () => {
+      const email = resetEmail.value.trim();
+      if (!email) {
+        resetMsg.textContent = "Please enter your email.";
+        resetMsg.style.color = "red";
+        return;
+      }
+
+      resetBtn.disabled = true;
+      resetBtn.textContent = "Sending...";
+
+      try {
+        await sendResetEmail(email);
+        resetMsg.style.color = "green";
+        resetMsg.textContent = "Password reset email sent. Check your inbox.";
+      } catch (err) {
+        console.error(err);
+        resetMsg.style.color = "red";
+        if (err.code === "auth/user-not-found") {
+          resetMsg.textContent = "No account found with that email.";
+        } else {
+          resetMsg.textContent = err.message || "Unable to send reset email.";
+        }
+      } finally {
+        resetBtn.disabled = false;
+        resetBtn.textContent = "Send Reset Email";
+      }
+    });
+  </script>
+
 </body>
 </html>

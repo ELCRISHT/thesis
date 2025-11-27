@@ -1,151 +1,132 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Welcome • IntelliGrade</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="welcome.css" />
 </head>
-
 <body class="welcome-page">
 
-  <!-- Background Particles -->
-  <div class="particles"></div>
+  <div class="particles" aria-hidden="true"></div>
+  <!-- Side Menu -->
+  <nav id="sideMenu" class="side-menu" aria-hidden="true">
+    <h2>Menu</h2>
+    <ul>
+      <li><button type="button" data-scroll="about">About</button></li>
+      <li><button type="button" data-scroll="developers">Developers</button></li>
+      <li><button type="button" data-scroll="techstack">Tech Stack</button></li>
+      <li><button id="logoutBtn" type="button" class="logout">Logout</button></li>
+    </ul>
+  </nav>
 
-  <!-- ========================= -->
-  <!--   LEFT HAMBURGER MENU     -->
-  <!-- ========================= -->
-  <div class="hamburger-menu" onclick="toggleMenu()">
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-  </div>
+  <!-- Main -->
+  <main class="welcome-container">
+    <header class="welcome-header">
+      <h1 class="welcome-title" id="welcomeTitle">WELCOME</h1>
+      <p class="subtitle" id="subtitle">Forecasting Academic Performance based on AI Tool Dependency</p>
+      <div class="actions">
+        <button id="getStartedBtn" class="btn btn-primary">Get Started</button>
+      </div>
+    </header>
 
-  <!-- Slide-Out Menu -->
-  <div id="sideMenu" class="side-menu">
-      <h2>Menu</h2>
-      <ul>
-          <li onclick="scrollToSection('about')">About</li>
-          <li onclick="scrollToSection('developers')">Developers</li>
-          <li onclick="scrollToSection('techstack')">Tech Stack</li>
-      </ul>
-  </div>
+    <section class="info-cards" aria-labelledby="cards-heading">
+      <article class="purpose-card reveal">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M6 2h9a4 4 0 0 1 4 4v14a1 1 0 0 1-1 1h-1v-2H7a2 2 0 0 0-2 2H3V6a4 4 0 0 1 3-4z"/></svg>
+        </div>
+        <div class="card-body">
+          <h3>Academic Insight</h3>
+          <p>Examining how students' dependency on AI-assisted tools influences academic performance.</p>
+        </div>
+      </article>
 
-  <!-- ========================= -->
-  <!--     WELCOME CONTENT       -->
-  <!-- ========================= -->
-  <div class="welcome-container">
-    <h1 class="welcome-title">WELCOME</h1>
-    <p>Forecasting Academic Performance based on AI Tool Dependency</p>
+      <article class="purpose-card reveal">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 2a4 4 0 0 0-4 4v1.1A4 4 0 0 0 2 11v2a4 4 0 0 0 3 3.9V18a4 4 0 1 0 8 0v-.1h2V18a4 4 0 1 0 8 0v-.1A4 4 0 0 0 22 13v-2a4 4 0 0 0-3-3.9V6a4 4 0 1 0-8 0V5.9A4 4 0 0 0 9 2z"/></svg>
+        </div>
+        <div class="card-body">
+          <h3>AI Dependency</h3>
+          <p>Identifies risk indicators and learning impacts related to AI reliance.</p>
+        </div>
+      </article>
 
-    <button class="btn-start" onclick="goDashboard()">Get Started</button>
+      <article class="purpose-card reveal">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 3h2v18H3V3m4 8h2v10H7V11m4-4h2v14h-2V7m4 8h2v6h-2v-6m4-10h2v16h-2V5z"/></svg>
+        </div>
+        <div class="card-body">
+          <h3>AI Usage & Behavior</h3>
+          <p>Data-driven insights for educators and administrators on AI usage patterns.</p>
+        </div>
+      </article>
+    </section>
+  </main>
 
-    <div class="info-cards">
-
-  <!-- Card 1 -->
-  <div class="purpose-card reveal-hidden">
-    <div class="card-icon">
-      <!-- Book Icon -->
-      <svg viewBox="0 0 24 24">
-        <path fill="currentColor" d="M6 2h9a4 4 0 0 1 4 4v14a1 1 0 0 1-1 1h-1v-2H7a2 2 0 0 0-2 2H3V6a4 4 0 0 1 3-4z"/>
-      </svg>
-    </div>
-    <div class="card-body">
-      <h3>Academic Insight</h3>
-      <p>To examine how students’ dependency on AI-assisted tools influences their academic performance.</p>
-    </div>
-  </div>
-
-  <!-- Card 2 -->
-  <div class="purpose-card reveal-hidden">
-    <div class="card-icon">
-      <!-- Brain Icon -->
-      <svg viewBox="0 0 24 24">
-        <path fill="currentColor" d="M9 2a4 4 0 0 0-4 4v1.1A4 4 0 0 0 2 11v2a4 4 0 0 0 3 3.9V18a4 4 0 1 0 8 0v-.1h2V18a4 4 0 1 0 8 0v-.1A4 4 0 0 0 22 13v-2a4 4 0 0 0-3-3.9V6a4 4 0 1 0-8 0V5.9A4 4 0 0 0 9 2z"/>
-      </svg>
-    </div>
-    <div class="card-body">
-      <h3>AI Dependency</h3>
-      <p>IntelliGrade analyzes patterns of AI dependency to identify risk indicators and learning impacts.</p>
-    </div>
-  </div>
-
-  <!-- Card 3 -->
-  <div class="purpose-card reveal-hidden">
-    <div class="card-icon">
-      <!-- Analytics Chart Icon -->
-      <svg viewBox="0 0 24 24">
-        <path fill="currentColor" d="M3 3h2v18H3V3m4 8h2v10H7V11m4-4h2v14h-2V7m4 8h2v6h-2v-6m4-10h2v16h-2V5z"/>
-      </svg>
-    </div>
-    <div class="card-body">
-      <h3>AI Usage and Behavior</h3>
-      <p>Provides educators and administrators with data-driven insights about AI usage behavior.</p>
-    </div>
-  </div>
-
-</div>
-
-  </div>
-
-  <!-- ========================= -->
-  <!--        ABOUT SECTION      -->
-  <!-- ========================= -->
-  <section id="about" class="info-section">
+  <!-- About -->
+  <section id="about" class="info-section container">
     <h2>About IntelliGrade</h2>
-    <p>
-      Built using integrated theoretical frameworks such as Cognitive Load Theory (CLT), 
-      Self-Determination Theory (SDT), and Social Cognitive Theory (SCT), the system generates 
-      insights and recommendations based on students’ usage behavior, motivation, 
-      and cognitive patterns.
-    </p>
+    <p>IntelliGrade is an innovative platform designed to forecast academic performance by analyzing students' 
+      dependency on AI-assisted tools. Leveraging advanced machine learning algorithms and psychological theories, 
+      it provides educators and administrators with actionable insights to support student success in an AI-integrated learning environment.</p>
+    <p>Built using Cognitive Load Theory (CLT), Self-Determination Theory (SDT), and Social Cognitive Theory (SCT),
+       IntelliGrade generates personalized recommendations based on usage behavior and cognitive patterns. By identifying risk indicators and learning impacts related to AI reliance, the system helps mitigate potential academic challenges while promoting effective AI integration in education.</p>
+    <p>Key features include real-time performance forecasting, behavioral analytics, customizable dashboards, 
+      and comprehensive reporting tools. IntelliGrade empowers institutions to make data-driven decisions, 
+      fostering a balanced approach to technology in education that enhances learning outcomes without compromising academic integrity.</p>
+    <p>Whether you're an educator seeking to understand AI's impact on student engagement or an administrator aiming to optimize institutional strategies, IntelliGrade serves as your intelligent companion in navigating the evolving landscape of AI-enhanced education.</p>
   </section>
 
-<section id="developers" class="info-section reveal-hidden">
-  <h2>Developers</h2>
+  <!-- Developers -->
+  <section id="developers" class="info-section container">
+    <h2>Developers</h2>
+    <div class="dev-list">
+      <div class="dev-card">
+        <img class="dev-photo" src="reed.png" alt="J.R. Lajom photo" loading="lazy">
+        <div class="dev-info">
+          <p class="dev-role">Resource Associate</p>
+          <p class="dev-name">J.R. Lajom</p>
+        </div>
+      </div>
 
-  <div class="dev-list">
-    <div class="dev-card reveal-hidden">
-      <img class="dev-photo" src="reed.png" alt="DevCo-BLV photo" loading="lazy">
-      <h3>Resource Associate</h3>
-      <h4>J.R. Lajom</h4>
+      <div class="dev-card">
+        <img class="dev-photo" src="mj.png" alt="M.J. Valdez photo" loading="lazy">
+        <div class="dev-info">
+          <p class="dev-role">System Developer</p>
+          <p class="dev-name">M.J. Valdez</p>
+        </div>
+      </div>
+
+      <div class="dev-card">
+        <img class="dev-photo" src="karell.png" alt="A.K. Balan photo" loading="lazy">
+        <div class="dev-info">
+          <p class="dev-role">Project Manager</p>
+          <p class="dev-name">A.K. Balan</p>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="dev-card reveal-hidden">
-      <img class="dev-photo" src="mj.png" alt="Ellcryst photo" loading="lazy">
-      <h3>System Developer</h3>
-      <h4> M.J. Valdez</h4>
-    </div>
-
-    <div class="dev-card reveal-hidden">
-      <img class="dev-photo" src="karell.png" alt="Project Team photo" loading="lazy">
-      <h3>Project Manager</h3>
-      <h4> A.K. Balan</h4>
-    </div>
-  </div>
-</section>
-
-  <!-- ========================= -->
-  <!--      TECH STACK SECTION   -->
-  <!-- ========================= -->
-  <section id="techstack" class="info-section">
+  <!-- Tech Stack -->
+  <section id="techstack" class="info-section container">
     <h2>Tech Stack</h2>
-
     <ul class="tech-list">
       <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
       <li><strong>Visualizations:</strong> Chart.js</li>
       <li><strong>Backend:</strong> FastAPI (Python)</li>
-      <li><strong>Database:</strong>Firebase</li>
-      <li><strong>Reports:</strong> PDF/CSV/EXCEL</li>
+      <li><strong>Database:</strong> Firebase</li>
+      <li><strong>Reports:</strong> PDF / CSV / XLSX</li>
     </ul>
   </section>
 
-  <!-- Footer -->
-  <footer class="welcome-footer">
-    IntelliGrade — DevCo-BLV © 2025
+  <footer class="welcome-footer container">
+    IntelliGrade — DevCo-BLV © <span id="year"></span>
   </footer>
 
-  <script src="welcome.js"></script>
+  <!-- Modules -->
+  <script type="module" src="firebase-init.js"></script>
+  <script type="module" src="auth.js"></script>
+  <script type="module" src="welcome.js"></script>
 </body>
 </html>

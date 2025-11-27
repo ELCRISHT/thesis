@@ -1,10 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>IntelliGrade</title>
+  <title>IntelliGrade • Sign Up</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="auth">
@@ -12,24 +11,46 @@
     <img src="IntelliGrade.png" class="logo" alt="LSPU logo">
     <h2>Create Account</h2>
     <input id="regEmail" placeholder="Email" type="email" />
-    <input id="regPassword" placeholder="Password" type="password" />
-    <button onclick="signup()">Sign Up</button>
+    <input id="regPassword" placeholder="Password (min 6 chars)" type="password" />
+    <button id="signupBtn">Sign Up</button>
     <p>Already have an account? <a href="login.html">Login</a></p>
+    <p id="msg" style="font-size:13px;color:#444;margin-top:8px"></p>
   </div>
-<script>
-function signup(){
-  const email=document.getElementById('regEmail').value;
-  const pass=document.getElementById('regPassword').value;
-  const users=JSON.parse(localStorage.getItem('users')||'[]');
-  if(users.find(u=>u.email===email)){
-    alert('User already exists');
-    return;
-  }
-  users.push({email,pass});
-  localStorage.setItem('users',JSON.stringify(users));
-  alert('Registration successful!');
-  window.location.href='login.html';
-}
-</script>
+
+  <!-- Firebase + helpers -->
+  <script type="module" src="firebase-init.js"></script>
+  <script type="module" src="auth.js"></script>
+
+  <script type="module">
+    import { createUserAndProfile } from './auth.js';
+
+    const signupBtn = document.getElementById('signupBtn');
+    const msg = document.getElementById('msg');
+
+    signupBtn.addEventListener('click', async () => {
+      msg.textContent = '';
+      const email = document.getElementById('regEmail').value.trim();
+      const pass = document.getElementById('regPassword').value;
+      if (!email || !pass) { msg.textContent = 'Please provide email and password.'; return; }
+      if (pass.length < 6) { msg.textContent = 'Password must be at least 6 characters.'; return; }
+
+      signupBtn.disabled = true;
+      signupBtn.textContent = 'Creating...';
+
+      try {
+        await createUserAndProfile(email, pass);
+        alert('Account created. A verification email has been sent to your email address. Please verify before logging in.');
+        window.location.href = 'login.html';
+      } catch (err) {
+        console.error(err);
+        if (err.code === 'auth/email-already-in-use') msg.textContent = 'Email is already in use.';
+        else if (err.code === 'auth/invalid-email') msg.textContent = 'Invalid email.';
+        else msg.textContent = err.message || 'Signup failed.';
+      } finally {
+        signupBtn.disabled = false;
+        signupBtn.textContent = 'Sign Up';
+      }
+    });
+  </script>
 </body>
 </html>
